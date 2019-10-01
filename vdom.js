@@ -3,9 +3,10 @@ function h(element, props = {}, ..._children) {
 }
 
 function render(vnodes, dom) {
-  const nodes = [].concat(vnodes);
+  const nodes = [].concat(vnodes || []);
+
   nodes.forEach((vnode, index) => {
-    const oldNode = dom.childNodes[index];oldNode
+    const oldNode = dom.childNodes[index];
     const state = oldNode && oldNode.element == vnode.element && oldNode.state || {};
     const data = { element: vnode.element, state, ...vnode.props };
 
@@ -33,14 +34,11 @@ function render(vnodes, dom) {
     Object.assign(newNode, data, { data: vnode });
 
     // Render children
-    if (vnode._children && vnode._children.length) {
-      render(vnode._children, newNode);
-    }
+    render(vnode._children, newNode);
   });
 
   // Remove unused children
   while (dom.childNodes[nodes.length]) {
-    console.log(dom.childNodes[nodes.length])
     dom.removeChild(dom.childNodes[nodes.length]);
   }
 }
