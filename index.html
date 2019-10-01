@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="vdom.js"></script>
+    <script>
+      const Clickable = (props, { clicks = 0 }, setState) =>
+        h(
+          "span",
+          {},
+          h(
+            "button",
+            {
+              onclick: () => setState({ clicks: clicks + 1 }),
+            },
+            `Clicked ${clicks} times`
+          )
+        );
+
+      render(
+        h("div",
+          {},
+          h(Clickable),
+          h(Clickable)
+        ),
+        document.body
+      )
+    </script>
+  </body>
+</html>
