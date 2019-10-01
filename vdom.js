@@ -3,7 +3,7 @@ function h(element, props = {}, ..._children) {
 }
 
 function render(vnodes, dom) {
-  const nodes = [].concat(vnodes || []);
+  const nodes = [].concat(vnodes);
 
   nodes.forEach((vnode, index) => {
     const oldNode = dom.childNodes[index];
@@ -22,7 +22,7 @@ function render(vnodes, dom) {
       : document.createTextNode(vnode);
 
     // Reconcile
-    if (oldNode && oldNode.element != vnode.element && oldNode.data != vnode) {
+    if (oldNode && oldNode.element != vnode.element && oldNode.vnode != vnode) {
       dom.replaceChild(newNode, oldNode);
     } else if (oldNode) {
       newNode = oldNode;
@@ -31,10 +31,10 @@ function render(vnodes, dom) {
     }
 
     // Copy properties
-    Object.assign(newNode, data, { data: vnode });
+    Object.assign(newNode, data, { vnode });
 
     // Render children
-    render(vnode._children, newNode);
+    render(vnode._children || [], newNode);
   });
 
   // Remove unused children
